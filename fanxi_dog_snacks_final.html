@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>狗零食冻干+烘干 SKU选品方案</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: #f5f6fa; color: #2c3e50; line-height: 1.6; }
+
+/* ====== Unified Header ====== */
+.header { background: linear-gradient(135deg, #1a2744 0%, #2c3e6b 50%, #1a5276 100%); color: white; padding: 56px 30px; text-align: center; }
+.header h1 { font-size: 30px; margin-bottom: 8px; letter-spacing: 3px; }
+.header .subtitle { opacity: 0.85; font-size: 15px; margin-top: 8px; }
+.header .badge { display: inline-block; background: rgba(255,255,255,0.18); border-radius: 20px; padding: 5px 18px; font-size: 13px; margin: 8px 6px; }
+.header .badge-fd { background: rgba(46,134,193,0.4); }
+.header .badge-hg { background: rgba(169,50,79,0.4); }
+
+.container { max-width: 1080px; margin: 0 auto; padding: 20px; }
+
+/* ====== Section Header ====== */
+.section-hd { display: flex; align-items: center; gap: 12px; margin: 32px 0 16px; }
+.section-hd .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.section-hd h2 { font-size: 22px; letter-spacing: 1px; }
+.fd-accent .dot { background: #2e86c1; }
+.fd-accent h2 { color: #1a5276; }
+.hg-accent .dot { background: #a9324f; }
+.hg-accent h2 { color: #6e1d2e; }
+
+/* ====== Total Overview ====== */
+.total-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 24px; }
+.total-item { background: linear-gradient(135deg, #1a2744, #2c3e6b); color: white; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 3px 15px rgba(26,39,68,0.2); }
+.total-item .number { font-size: 42px; font-weight: 700; }
+.total-item .label { font-size: 13px; opacity: 0.85; margin-top: 6px; }
+
+/* ====== Cards ====== */
+.card { background: white; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.card h2 { font-size: 19px; margin-bottom: 18px; padding-bottom: 12px; }
+.card-fd h2 { border-bottom: 3px solid #2e86c1; color: #1a5276; }
+.card-hg h2 { border-bottom: 3px solid #a9324f; color: #6e1d2e; }
+.card h3 { font-size: 16px; margin: 20px 0 12px; }
+
+/* Summary Grid */
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+.summary-item { background: white; border-radius: 12px; padding: 22px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.summary-item-fd { border-top: 4px solid #2e86c1; }
+.summary-item-hg { border-top: 4px solid #a9324f; }
+.summary-item .number { font-size: 38px; font-weight: 700; }
+.summary-item-fd .number { color: #1a5276; }
+.summary-item-hg .number { color: #6e1d2e; }
+.summary-item .label { font-size: 13px; color: #888; margin-top: 6px; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+.fd-tbl th { background: #eaf2f8; font-weight: 600; color: #1a5276; font-size: 13px; }
+.fd-tbl tr:hover { background: #f5f9fc; }
+.hg-tbl th { background: #fdf0f3; font-weight: 600; color: #6e1d2e; font-size: 13px; }
+.hg-tbl tr:hover { background: #fdf5f6; }
+tr.highlight { background: #eafaf1; }
+tr.highlight:hover { background: #d4efdf; }
+tr.sub-row td { font-size: 13px; }
+tr.sub-row td:first-child { padding-left: 32px; }
+
+/* Rank badge */
+.rank { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-weight: 700; font-size: 13px; color: white; }
+.rank-1 { background: #e74c3c; }
+.rank-2 { background: #e67e22; }
+.rank-3 { background: #f39c12; }
+.rank-fd { background: #2e86c1; }
+.rank-hg { background: #a9324f; }
+
+/* Bar chart */
+.bar-container { display: flex; align-items: center; margin: 10px 0; }
+.bar-label { width: 180px; font-size: 13px; font-weight: 500; flex-shrink: 0; text-align: right; padding-right: 12px; }
+.bar-track { flex: 1; background: #f0f0f0; border-radius: 5px; height: 26px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 5px; transition: width 0.6s; position: relative; }
+.bar-value { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 12px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); white-space: nowrap; }
+.pct { margin-left: 10px; font-size: 13px; font-weight: 600; color: #333; white-space: nowrap; width: 55px; }
+
+/* FD bar colors */
+.fd-c1 { background: linear-gradient(90deg, #2e86c1, #3498db); }
+.fd-c2 { background: linear-gradient(90deg, #e67e22, #f39c12); }
+.fd-c3 { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+.fd-c4 { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
+.fd-c5 { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+.fd-c6 { background: linear-gradient(90deg, #16a085, #1abc9c); }
+.fd-c7 { background: linear-gradient(90deg, #d35400, #e67e22); }
+.fd-c8 { background: linear-gradient(90deg, #2980b9, #3498db); }
+.fd-c9 { background: linear-gradient(90deg, #7f8c8d, #95a5a6); }
+.fd-c10 { background: linear-gradient(90deg, #f39c12, #f1c40f); }
+
+/* HG bar colors */
+.hg-c1 { background: linear-gradient(90deg, #a9324f, #d35460); }
+.hg-c2 { background: linear-gradient(90deg, #e67e22, #f39c12); }
+.hg-c3 { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
+.hg-c4 { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+.hg-c5 { background: linear-gradient(90deg, #2980b9, #3498db); }
+.hg-c6 { background: linear-gradient(90deg, #16a085, #1abc9c); }
+.hg-c7 { background: linear-gradient(90deg, #d35400, #e67e22); }
+
+/* Tags */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 11px; margin: 2px; }
+.tag-fd { background: #eaf2f8; color: #1a5276; }
+.tag-hg { background: #fdf0f3; color: #6e1d2e; }
+.tag-hot { background: #fdedec; color: #c0392b; }
+.tag-green { background: #eafaf1; color: #1e8449; }
+.tag-blue { background: #ebf5fb; color: #2980b9; }
+.tag-warn { background: #fef9e7; color: #b7950b; }
+.tag-purple { background: #f4ecf7; color: #76448a; }
+
+/* Alerts */
+.alert { padding: 16px 20px; border-radius: 8px; margin: 15px 0; font-size: 13px; line-height: 1.8; }
+.alert-info { background: #ebf5fb; border-left: 4px solid #2980b9; }
+.alert-warning { background: #fef9e7; border-left: 4px solid #f39c12; }
+.alert-success { background: #eafaf1; border-left: 4px solid #27ae60; }
+.alert-danger { background: #fdedec; border-left: 4px solid #e74c3c; }
+.alert strong { color: inherit; }
+
+/* Cross-ref table */
+.cross-table { margin-top: 15px; }
+.cross-table th { font-size: 13px; padding: 10px 14px; }
+.cross-table td { font-size: 14px; padding: 12px 14px; }
+
+/* Data source table */
+.src-table th, .src-table td { padding: 8px 12px; font-size: 13px; }
+.src-table th { font-size: 12px; }
+
+/* Divider */
+.divider { border: none; border-top: 2px dashed #d5dbdb; margin: 36px 0; }
+
+/* Final all-SKU table */
+.all-sku { margin-top: 24px; }
+.all-sku th { background: #1a2744; color: white; font-size: 13px; padding: 10px 14px; }
+.all-sku td { padding: 11px 14px; font-size: 14px; }
+.all-sku tr:nth-child(even) { background: #f8f9fa; }
+.all-sku tr:hover { background: #eaf2f8; }
+
+@media (max-width: 768px) {
+  .summary-grid, .total-grid { grid-template-columns: repeat(2, 1fr); }
+  .bar-label { width: 120px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<div class="header">
+  <h1>狗零食 冻干 + 烘干 SKU选品方案</h1>
+  <div class="subtitle">基于淘系 · 京东双平台SKU品类分布 | 2025年度数据</div>
+  <div style="margin-top:14px;">
+    <span class="badge badge-fd">❄️ 冻干线 8 SKU</span>
+    <span class="badge badge-hg">🔥 烘干线 8 SKU</span>
+    <span class="badge">淘系 ×2 权重</span>
+    <span class="badge">京东 辅平台</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ====== 总览 ====== -->
+<div class="total-grid">
+  <div class="total-item">
+    <div class="number">16</div>
+    <div class="label">最终SKU总数</div>
+  </div>
+  <div class="total-item">
+    <div class="number">242</div>
+    <div class="label">加权产品总数</div>
+  </div>
+  <div class="total-item">
+    <div class="number">冻干+烘干</div>
+    <div class="label">双线互补布局</div>
+  </div>
+  <div class="total-item">
+    <div class="number">2</div>
+    <div class="label">覆盖平台</div>
+  </div>
+</div>
+
+<!-- ====================================================================== -->
+<!--  PART 1: 冻干零食线                                                      -->
+<!-- ====================================================================== -->
+
+<div class="section-hd fd-accent">
+  <div class="dot"></div>
+  <h2>Part 1 · 冻干零食线</h2>
+</div>
+
+<!-- 冻干 总览 -->
+<div class="summary-grid">
+  <div class="summary-item summary-item-fd">
+    <div class="number">162</div>
+    <div class="label">加权产品总数</div>
+  </div>
+  <div class="summary-item summary-item-fd">
+    <div class="number">18</div>
+    <div class="label">独立SKU品类</div>
+  </div>
+  <div class="summary-item summary-item-fd">
+    <div class="number">~20%</div>
+    <div class="label">品牌CR10</div>
+  </div>
+  <div class="summary-item summary-item-fd">
+    <div class="number">2</div>
+    <div class="label">覆盖平台</div>
+  </div>
+</div>
+
+<!-- 冻干 TOP10 品类占比 -->
+<div class="card card-fd">
+  <h2>TOP10 SKU品类占比（双平台加权）</h2>
+
+  <div class="bar-container">
+    <div class="bar-label">🥇 冻干混合桶/多拼装</div>
+    <div class="bar-track"><div class="bar-fill fd-c1" style="width:100%"><div class="bar-value">27.2%</div></div></div>
+    <div class="pct">27.2%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">🥈 冻干鸡肉粒</div>
+    <div class="bar-track"><div class="bar-fill fd-c2" style="width:66%"><div class="bar-value">17.9%</div></div></div>
+    <div class="pct">17.9%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">🥉 冻干鸭肉粒/松</div>
+    <div class="bar-track"><div class="bar-fill fd-c3" style="width:57%"><div class="bar-value">15.5%</div></div></div>
+    <div class="pct">15.5%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">4. 冻干蔬菜水果</div>
+    <div class="bar-track"><div class="bar-fill fd-c4" style="width:50%"><div class="bar-value">13.6%</div></div></div>
+    <div class="pct">13.6%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">5. 冻干多春鱼/鱼类</div>
+    <div class="bar-track"><div class="bar-fill fd-c5" style="width:29%"><div class="bar-value">8.0%</div></div></div>
+    <div class="pct">8.0%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">6. 冻干生骨肉饼</div>
+    <div class="bar-track"><div class="bar-fill fd-c6" style="width:18%"><div class="bar-value">4.9%</div></div></div>
+    <div class="pct">4.9%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">7. 冻干鸡肉碎/拌粮</div>
+    <div class="bar-track"><div class="bar-fill fd-c7" style="width:14%"><div class="bar-value">3.7%</div></div></div>
+    <div class="pct">3.7%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">8. 冻干蛋黄粒</div>
+    <div class="bar-track"><div class="bar-fill fd-c8" style="width:14%"><div class="bar-value">3.7%</div></div></div>
+    <div class="pct">3.7%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">9. 冻干内脏类</div>
+    <div class="bar-track"><div class="bar-fill fd-c9" style="width:11%"><div class="bar-value">3.1%</div></div></div>
+    <div class="pct">3.1%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">10. 冻干羊奶棒/奶酪</div>
+    <div class="bar-track"><div class="bar-fill fd-c10" style="width:9%"><div class="bar-value">2.5%</div></div></div>
+    <div class="pct">2.5%</div>
+  </div>
+
+  <div class="alert alert-warning" style="margin-top:18px;">
+    <strong>⚠️ 数据口径：</strong>以上占比基于<strong>SKU数量统计</strong>，<strong>不等于实际销售额占比</strong>。一个鸡肉粒爆品月销可达100万级，一个果蔬类TOP产品月销可能仅20万级——SKU计数各算1次，实际销量差5倍。
+  </div>
+</div>
+
+<!-- 冻干 完整18品类分布 -->
+<div class="card card-fd">
+  <h2>完整SKU品类分布（18种 × 162款加权产品）</h2>
+  <table class="fd-tbl">
+    <thead>
+      <tr><th style="width:50px;">排名</th><th>SKU品类</th><th style="width:70px;">加权数</th><th style="width:70px;">占比</th><th style="width:70px;">累计</th><th>代表品牌</th><th>品类特征</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="rank rank-1">1</span></td>
+        <td><strong>冻干混合桶/多拼装</strong></td>
+        <td>44</td><td>27.2%</td><td>27.2%</td>
+        <td>麦富迪、网易严选、HELLOJOY、WEYES、京东京造、疯狂小狗、顽皮、领先</td>
+        <td><span class="tag tag-hot">最大品类</span> <span class="tag tag-fd">猫狗通用</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-2">2</span></td>
+        <td><strong>冻干鸡肉粒</strong></td>
+        <td>29</td><td>17.9%</td><td>45.1%</td>
+        <td>麦富迪、朗诺、京东京造、COCS、WEYES、藏宝海湾</td>
+        <td><span class="tag tag-green">基础款</span> <span class="tag tag-fd">最广谱</span> <span class="tag tag-fd">流量入口</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-3">3</span></td>
+        <td><strong>冻干鸭肉粒/松</strong></td>
+        <td>5</td><td>15.5%</td><td>60.6%</td>
+        <td>鲜粮说、地狱厨房(鸡鸭双拼)</td>
+        <td><span class="tag tag-hot">实际≈鸡肉级</span> <span class="tag tag-fd">高适口性</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>冻干蔬菜水果</strong></td>
+        <td>22</td><td>13.6%</td><td>74.2%</td>
+        <td>璞印、疯狂小狗、它福、JoyMe着迷、伴它金牌</td>
+        <td><span class="tag tag-blue">拌粮场景</span> <span class="tag tag-fd">功能化趋势</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>冻干多春鱼/鱼类</strong></td>
+        <td>13</td><td>8.0%</td><td>82.2%</td>
+        <td>朗诺、约克先生、雅礼颂、WEYES</td>
+        <td><span class="tag tag-blue">美毛场景</span> <span class="tag tag-fd">Omega-3</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>冻干生骨肉饼</strong></td>
+        <td>8</td><td>4.9%</td><td>87.2%</td>
+        <td>帕特诺尔、麦富迪(BARF)、生生不息、朗诺</td>
+        <td><span class="tag tag-hot">高端线</span> <span class="tag tag-fd">配方壁垒</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>冻干鸡肉碎/拌粮碎</strong></td>
+        <td>6</td><td>3.7%</td><td>90.9%</td>
+        <td>WEYES、淘宝白牌</td>
+        <td><span class="tag tag-green">拌粮专用</span> <span class="tag tag-fd">颗粒态</span></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><strong>冻干蛋黄粒</strong></td>
+        <td>6</td><td>3.7%</td><td>94.6%</td>
+        <td>帕特、hofay、贝琳德</td>
+        <td><span class="tag tag-blue">美毛刚需</span> <span class="tag tag-fd">卵磷脂</span></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td><strong>冻干内脏类</strong></td>
+        <td>5</td><td>3.1%</td><td>97.7%</td>
+        <td>爵宴(Meatyway)、伴它金牌、淘宝自制</td>
+        <td><span class="tag tag-warn">高适口性</span> <span class="tag tag-fd">牛肝/猪心</span></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><strong>冻干羊奶棒/奶酪</strong></td>
+        <td>4</td><td>2.5%</td><td>87.7%</td>
+        <td>麦富迪(主导)、蓝爵</td>
+        <td><span class="tag tag-hot">高增长</span> <span class="tag tag-fd">幼犬刚需</span></td>
+      </tr>
+      <tr><td colspan="7" style="text-align:center;color:#999;padding:10px;">—— 以上TOP10合计占比 <strong>100.2%</strong> ——</td></tr>
+      <tr>
+        <td>11</td><td>冻干鸡小胸</td><td>4</td><td>2.5%</td><td>90.1%</td><td>地狱厨房、渴望</td><td><span class="tag tag-fd">纯肉原切</span></td>
+      </tr>
+      <tr>
+        <td>12</td><td>冻干关节保健</td><td>4</td><td>2.5%</td><td>92.6%</td><td>迪迪妈、渔夫牧场</td><td><span class="tag tag-fd">软骨素</span> <span class="tag tag-fd">功能细分</span></td>
+      </tr>
+      <tr>
+        <td>13</td><td>冻干鸡胸肉/整块</td><td>2</td><td>1.2%</td><td>93.8%</td><td>淘宝白牌、麦富迪、京东京造</td><td><span class="tag tag-fd">大包装</span></td>
+      </tr>
+      <tr>
+        <td>14</td><td>烘干鸭肉缠裹类</td><td>2</td><td>1.2%</td><td>95.1%</td><td>爵宴</td><td><span class="tag tag-fd">肉+蔬果</span></td>
+      </tr>
+      <tr>
+        <td>15</td><td>冻干磨牙骨类</td><td>2</td><td>1.2%</td><td>96.3%</td><td>璞印</td><td><span class="tag tag-fd">洁齿补钙</span></td>
+      </tr>
+      <tr>
+        <td>16</td><td>冻干牛肉类</td><td>2</td><td>1.2%</td><td>97.5%</td><td>ZEAL</td><td><span class="tag tag-fd">进口高端</span></td>
+      </tr>
+      <tr>
+        <td>17</td><td>冻干鸡胸肉/鸡小胸</td><td>2</td><td>1.2%</td><td>98.8%</td><td>京东京造、麦富迪</td><td><span class="tag tag-fd">京东专属</span></td>
+      </tr>
+      <tr class="highlight">
+        <td>18</td><td><strong>冻干模具化产品</strong></td><td>2</td><td>1.2%</td><td>100%</td><td>parlmu、鲜朗</td><td><span class="tag tag-hot">新兴品类</span> <span class="tag tag-green">趋势储备</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 冻干 SKU方案 -->
+<div class="card card-fd" style="border-left: 4px solid #2e86c1;">
+  <h2>冻干线 8个SKU选品方案</h2>
+
+  <table class="fd-tbl">
+    <thead><tr><th style="width:40px;">#</th><th style="width:160px;">SKU</th><th>数据支撑</th><th style="width:100px;">优先级</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="rank rank-fd">1</span></td>
+        <td><strong>冻干鸡肉粒</strong></td>
+        <td>SKU占比 17.9%<br>京东TOP2<br>最广谱流量入口</td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-fd">2</span></td>
+        <td><strong>冻干鸭肉粒</strong></td>
+        <td>15.5%<br>实际≈鸡肉级<br>纯鸭肉供给不足</td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-fd">3</span></td>
+        <td><strong>冻干生骨肉夹心</strong></td>
+        <td>SKU占比 4.9%<br>高端线标杆<br>帕特诺尔/BARF生态</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-fd">4</span></td>
+        <td><strong>冻干羊奶棒</strong></td>
+        <td>SKU占比 2.5%<br>幼犬补钙刚需<br>麦富迪主导</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-fd">5</span></td>
+        <td><strong>冻干鸡肉蛋黄粒</strong></td>
+        <td>SKU占比 3.7%+<br>美毛卵磷脂刚需<br>鸡肉+蛋黄黄金组合</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-fd">6</span></td>
+        <td><strong>冻干内脏<br>（兔血/牛肝/猪心）</strong></td>
+        <td>SKU占比 3.1%<br>高适口性<br>爵宴/伴它金牌先例</td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-fd">7</span></td>
+        <td><strong>果蔬鸡肉拌饭碎</strong></td>
+        <td>SKU占比 13.6%<br>拌粮功能场景<br>⚠️ 单品销量偏小</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-fd">8</span></td>
+        <td><strong>混合果蔬模具类</strong></td>
+        <td>新兴品类 1.2%<br>parlmu/鲜朗试水<br>趣味+功能差异化</td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====================================================================== -->
+<!--  PART 2: 烘干零食线                                                      -->
+<!-- ====================================================================== -->
+
+<div class="section-hd hg-accent">
+  <div class="dot"></div>
+  <h2>Part 2 · 烘干零食线</h2>
+</div>
+
+<!-- 烘干 总览 -->
+<div class="summary-grid">
+  <div class="summary-item summary-item-hg">
+    <div class="number">80</div>
+    <div class="label">加权产品总数</div>
+  </div>
+  <div class="summary-item summary-item-hg">
+    <div class="number">12</div>
+    <div class="label">独立SKU品类</div>
+  </div>
+  <div class="summary-item summary-item-hg">
+    <div class="number">~20%</div>
+    <div class="label">品牌CR10</div>
+  </div>
+  <div class="summary-item summary-item-hg">
+    <div class="number">2</div>
+    <div class="label">覆盖平台</div>
+  </div>
+</div>
+
+<!-- 烘干 TOP品类占比 -->
+<div class="card card-hg">
+  <h2>TOP品类SKU占比（双平台加权）</h2>
+
+  <div class="bar-container">
+    <div class="bar-label">🥇 烘干鸡肉干</div>
+    <div class="bar-track"><div class="bar-fill hg-c1" style="width:100%"><div class="bar-value">31.3%</div></div></div>
+    <div class="pct">31.3%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">🥈 烘干鸭肉干</div>
+    <div class="bar-track"><div class="bar-fill hg-c2" style="width:72%"><div class="bar-value">22.5%</div></div></div>
+    <div class="pct">22.5%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">🥉 烘干果蔬缠肉/卷</div>
+    <div class="bar-track"><div class="bar-fill hg-c3" style="width:66%"><div class="bar-value">20.6%</div></div></div>
+    <div class="pct">20.6%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">4. 烘干磨牙洁齿</div>
+    <div class="bar-track"><div class="bar-fill hg-c4" style="width:46%"><div class="bar-value">14.4%</div></div></div>
+    <div class="pct">14.4%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">5. 烘干鸡鸭混合肉干</div>
+    <div class="bar-track"><div class="bar-fill hg-c5" style="width:16%"><div class="bar-value">5.0%</div></div></div>
+    <div class="pct">5.0%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">6. 烘干肉粒/肉丁</div>
+    <div class="bar-track"><div class="bar-fill hg-c6" style="width:8%"><div class="bar-value">2.5%</div></div></div>
+    <div class="pct">2.5%</div>
+  </div>
+  <div class="bar-container">
+    <div class="bar-label">7. 其他烘干肉类</div>
+    <div class="bar-track"><div class="bar-fill hg-c7" style="width:12%"><div class="bar-value">3.8%</div></div></div>
+    <div class="pct">3.8%</div>
+  </div>
+
+  <div class="alert alert-warning" style="margin-top:18px;">
+    <strong>⚠️ 数据口径：</strong>以上占比基于<strong>SKU数量统计</strong>，<strong>不等于实际销售额占比</strong>。鸡肉干爆品月销可达百万级，肉粒/肉丁月销可能仅几万级——SKU计数各算1次，实际销量差距显著。本报告SKU品类分布主要反映<strong>市场供给结构与竞争热度</strong>。
+  </div>
+</div>
+
+<!-- 烘干 完整12品类分布 -->
+<div class="card card-hg">
+  <h2>完整SKU品类分布（12类 × 80款加权产品）</h2>
+  <table class="hg-tbl">
+    <thead>
+      <tr><th style="width:50px;">排名</th><th>SKU品类</th><th style="width:70px;">加权数</th><th style="width:70px;">占比</th><th style="width:70px;">累计</th><th>代表品牌</th><th>品类特征</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="rank rank-1">1</span></td>
+        <td><strong>烘干鸡肉干</strong></td>
+        <td>25</td><td>31.3%</td><td>31.3%</td>
+        <td>麦富迪、疯狂小狗、HELLOJOY、耐威克、京东京造</td>
+        <td><span class="tag tag-hot">最大品类</span> <span class="tag tag-hg">纯肉基本盘</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-2">2</span></td>
+        <td><strong>烘干鸭肉干</strong></td>
+        <td>18</td><td>22.5%</td><td>53.8%</td>
+        <td>爵宴（Meatyway）、益和鲜时、HELLOJOY、顽皮</td>
+        <td><span class="tag tag-hot">第二大肉源</span> <span class="tag tag-hg">清火低敏</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-3">3</span></td>
+        <td><strong>烘干果蔬缠肉/卷</strong></td>
+        <td>16.5</td><td>20.6%</td><td>74.4%</td>
+        <td>爵宴（绝对主导）、HELLOJOY、益和鲜时、麦富迪</td>
+        <td><span class="tag tag-hot">烘干独有形态</span> <span class="tag tag-hg">缠裹工艺</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 鸭肉缠甘薯</td>
+        <td>~5</td><td>~6.3%</td><td>—</td>
+        <td>爵宴鸭肉甘薯卷（标杆爆品）</td>
+        <td><span class="tag tag-green">缠肉核心</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 鸡肉缠紫薯</td>
+        <td>~3.5</td><td>~4.4%</td><td>—</td>
+        <td>HELLOJOY、顽皮</td>
+        <td><span class="tag tag-blue">视觉差异化</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 鸡肉缠苹果/雪梨/秋葵等</td>
+        <td>~3</td><td>~3.8%</td><td>—</td>
+        <td>爵宴、HELLOJOY</td>
+        <td><span class="tag tag-blue">甜咸风味</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 其他鸭肉缠裹（海苔/芝士等）</td>
+        <td>~5</td><td>~6.3%</td><td>—</td>
+        <td>爵宴、益和鲜时</td>
+        <td><span class="tag tag-hg">口味创新</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>烘干磨牙洁齿</strong></td>
+        <td>11.5</td><td>14.4%</td><td>88.8%</td>
+        <td>SMARTBONES、益和、疯狂小狗、HELLOJOY、顽皮</td>
+        <td><span class="tag tag-hot">功能刚需</span> <span class="tag tag-warn">京东数据源低估</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 磨牙棒</td>
+        <td>~4.5</td><td>~5.6%</td><td>—</td>
+        <td>SMARTBONES、益和、疯狂小狗</td>
+        <td><span class="tag tag-green">基础刚需</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 洁齿骨/咬胶</td>
+        <td>~4</td><td>~5.0%</td><td>—</td>
+        <td>SMARTBONES、HELLOJOY、顽皮</td>
+        <td><span class="tag tag-green">口腔护理</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 牛皮卷/洁齿饼干</td>
+        <td>~3</td><td>~3.8%</td><td>—</td>
+        <td>HELLOJOY、比瑞吉</td>
+        <td><span class="tag tag-blue">耐嚼型</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>烘干鸡鸭混合肉干</strong></td>
+        <td>4</td><td>5.0%</td><td>93.8%</td>
+        <td>顽皮、HELLOJOY</td>
+        <td><span class="tag tag-blue">双肉源组合</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>烘干肉粒/肉丁<br><small style="color:#999;">（含牛肉粒等各肉源）</small></strong></td>
+        <td>2</td><td>2.5%</td><td>96.3%</td>
+        <td>益和鲜时、耐威克、疯狂小狗</td>
+        <td><span class="tag tag-hg">训练零食</span> <span class="tag tag-hg">小颗粒</span></td>
+      </tr>
+      <tr class="highlight">
+        <td>7</td>
+        <td><strong>其他烘干肉类</strong></td>
+        <td>3</td><td>3.8%</td><td>100%</td>
+        <td>多品牌</td>
+        <td><span class="tag tag-hg">长尾品类</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 烘干内脏类</td>
+        <td>~0.5</td><td>~0.6%</td><td>—</td>
+        <td>伯爵、淘系白牌</td>
+        <td><span class="tag tag-hg">高适口性</span></td>
+      </tr>
+      <tr class="sub-row">
+        <td></td>
+        <td>&#9492; 混合多肉桶/肉松/鱼肉干</td>
+        <td>~2.5</td><td>~3.1%</td><td>—</td>
+        <td>多品牌</td>
+        <td><span class="tag tag-hg">混搭/礼包</span></td>
+      </tr>
+      <tr><td colspan="7" style="text-align:center;color:#999;padding:10px;">—— 以上覆盖100% ——</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-danger" style="margin-top:16px;">
+    <strong>🔴 数据源偏差提示：磨牙洁齿品类被京东搜索词结构性低估</strong><br>
+    京东搜索词「狗零食肉干排行榜」仅覆盖磨牙洁齿 <strong>2/37款（5.4%）</strong>，而淘系搜索「狗烘干零食热销」达 <strong>6/19款（31.6%）</strong>。《2025年中国宠物行业白皮书》数据显示犬主人洁齿骨/咬胶购买率 <strong>63.4%</strong>，仅次于肉干/肉条（81.2%）。双平台加权后的14.4%仅反映SKU供给端，<strong>真实市场需求应在20-30%区间</strong>。在产品规划时应给予磨牙洁齿与肉干同等级别的重视。
+  </div>
+</div>
+
+<!-- 烘干 SKU方案 -->
+<div class="card card-hg" style="border-left: 4px solid #a9324f;">
+  <h2>烘干线 8个SKU选品方案</h2>
+
+  <table class="hg-tbl">
+    <thead><tr><th style="width:40px;">#</th><th style="width:160px;">SKU</th><th>数据支撑</th><th style="width:100px;">优先级</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="rank rank-hg">1</span></td>
+        <td><strong>烘干鸡肉干</strong></td>
+        <td>SKU占比 31.3%<br>最大纯肉品类<br>消费认知最强</td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-hg">2</span></td>
+        <td><strong>烘干鸭肉干</strong></td>
+        <td>SKU占比 22.5%<br>第二大肉源<br>清火低敏差异化</td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-hg">3</span></td>
+        <td><strong>鸭肉绕雪梨</strong></td>
+        <td>缠肉品类 20.6%<br>鸭肉+雪梨经典搭配<br>清火润燥概念</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-hg">4</span></td>
+        <td><strong>鸡肉绕红薯</strong></td>
+        <td>缠肉品类 20.6%<br>经典肉蔬缠裹形态<br>鸡肉+红薯国民组合</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-hg">5</span></td>
+        <td><strong>黄瓜鸭肉薯片</strong></td>
+        <td>烘干薄片差异化形态<br>鸭肉+黄瓜清爽概念<br>区别于传统肉干的新口感</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-hg">6</span></td>
+        <td><strong>鸡肉蛋黄薯片</strong></td>
+        <td>蛋黄美毛功能概念<br>鸡肉+蛋黄黄金组合<br>与冻干蛋黄粒形成品类协同</td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-hg">7</span></td>
+        <td><strong>鸡鸭混合牛筋棒</strong></td>
+        <td>磨牙洁齿 14.4% 刚需<br>牛筋耐嚼差异化<br>鸡鸭双肉源概念延伸</td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+      </tr>
+      <tr>
+        <td><span class="rank rank-hg">8</span></td>
+        <td><strong>烘干猪宝片</strong></td>
+        <td>内脏类高适口性<br>猪内脏差异化肉源<br>填补烘干内脏线空白</td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====================================================================== -->
+<!--  冻干 vs 烘干 品类互补对照                                               -->
+<!-- ====================================================================== -->
+
+<div class="card">
+  <h2 style="border-bottom: 3px solid #1a2744; color: #1a2744;">冻干 vs 烘干 品类互补对照</h2>
+  <table class="cross-table">
+    <thead>
+      <tr><th style="width:100px;"></th><th style="background:#eaf2f8; color:#1a5276;">❄️ 冻干零食</th><th style="background:#fdf0f3; color:#6e1d2e;">🔥 烘干零食</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>核心定位</strong></td>
+        <td>原料 + 营养（酥脆口感）</td>
+        <td>形态 + 口感（韧劲嚼感）</td>
+      </tr>
+      <tr>
+        <td><strong>独有品类</strong></td>
+        <td>肉粒、生骨肉饼、羊奶棒、果蔬粒</td>
+        <td>缠肉/卷、磨牙棒、洁齿骨</td>
+      </tr>
+      <tr>
+        <td><strong>共享肉源</strong></td>
+        <td>鸡肉、鸭肉</td>
+        <td>鸡肉、鸭肉</td>
+      </tr>
+      <tr>
+        <td><strong>产品形态</strong></td>
+        <td>颗粒/粉状/饼状，松脆易碎</td>
+        <td>整块肉干/缠绕/棒状/薄片，耐嚼</td>
+      </tr>
+      <tr>
+        <td><strong>功能场景</strong></td>
+        <td>挑食诱导、营养补充、拌粮</td>
+        <td>磨牙洁齿、奖励零食、互动喂食</td>
+      </tr>
+      <tr>
+        <td><strong>品类协同</strong></td>
+        <td colspan="2" style="text-align:center;background:#f8f9fa;">冻干鸡肉蛋黄粒 ↔ 烘干鸡肉蛋黄薯片：<strong>「蛋黄美毛」概念跨线联动</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-success" style="margin-top:16px;">
+    <strong>✅ 双线互补逻辑：</strong>冻干解决「吃什么」，烘干解决「怎么吃」。同一个消费者既需要冻干肉粒的营养密度（拌粮/训练），也需要烘干肉干的嚼感体验（磨牙/奖励）。两条线共享鸡肉+鸭肉核心肉源供应链，但在形态和场景上形成互补，避免内部竞争。
+  </div>
+</div>
+
+<!-- ====================================================================== -->
+<!--  最终16个SKU总表                                                        -->
+<!-- ====================================================================== -->
+
+<div class="card">
+  <h2 style="border-bottom: 3px solid #1a2744; color: #1a2744;">狗零食 16个SKU选品总表</h2>
+  <table class="all-sku">
+    <thead>
+      <tr><th style="width:35px;">#</th><th style="width:130px;">产品线</th><th style="width:170px;">SKU</th><th style="width:100px;">优先级</th><th>品类定位</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>冻干鸡肉粒</strong></td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+        <td>纯肉基础款，最广谱流量入口</td>
+      </tr>
+      <tr>
+        <td>2</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>冻干鸭肉粒</strong></td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+        <td>第二大肉源，纯鸭肉供给不足缺口</td>
+      </tr>
+      <tr>
+        <td>3</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>烘干鸡肉干</strong></td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+        <td>烘干最大品类 31.3%，纯肉基本盘</td>
+      </tr>
+      <tr>
+        <td>4</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>烘干鸭肉干</strong></td>
+        <td><span class="tag tag-hot">首发必选</span></td>
+        <td>烘干第二大肉源 22.5%，清火低敏</td>
+      </tr>
+      <tr style="background:#f8f9fa;">
+        <td colspan="5" style="text-align:center;padding:8px;font-weight:600;color:#888;">—— 首发必选：4 SKU，覆盖冻干+烘干最大肉源品类 ——</td>
+      </tr>
+      <tr>
+        <td>5</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>冻干生骨肉夹心</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>高端线标杆，配方壁垒</td>
+      </tr>
+      <tr>
+        <td>6</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>冻干羊奶棒</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>幼犬补钙刚需，高增长品类</td>
+      </tr>
+      <tr>
+        <td>7</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>冻干鸡肉蛋黄粒</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>美毛卵磷脂刚需，联动烘干蛋黄薯片</td>
+      </tr>
+      <tr>
+        <td>8</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>果蔬鸡肉拌饭碎</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>拌粮功能场景，果蔬+鸡肉颗粒</td>
+      </tr>
+      <tr>
+        <td>9</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>鸭肉绕雪梨</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>缠肉核心，鸭肉+雪梨清火润燥</td>
+      </tr>
+      <tr>
+        <td>10</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>鸡肉绕红薯</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>缠肉经典，鸡肉+红薯国民组合</td>
+      </tr>
+      <tr>
+        <td>11</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>黄瓜鸭肉薯片</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>烘干薄片新形态，清爽概念</td>
+      </tr>
+      <tr>
+        <td>12</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>鸡肉蛋黄薯片</strong></td>
+        <td><span class="tag tag-green">首批跟进</span></td>
+        <td>蛋黄美毛概念，联动冻干蛋黄粒</td>
+      </tr>
+      <tr style="background:#f8f9fa;">
+        <td colspan="5" style="text-align:center;padding:8px;font-weight:600;color:#888;">—— 首批跟进：8 SKU，冻干4款 + 烘干4款 ——</td>
+      </tr>
+      <tr>
+        <td>13</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>冻干内脏（兔血/牛肝/猪心）</strong></td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+        <td>高适口性差异化肉源</td>
+      </tr>
+      <tr>
+        <td>14</td><td><span class="tag tag-fd">❄️ 冻干</span></td>
+        <td><strong>混合果蔬模具类</strong></td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+        <td>新兴品类，趣味+功能差异化</td>
+      </tr>
+      <tr>
+        <td>15</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>鸡鸭混合牛筋棒</strong></td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+        <td>磨牙洁齿刚需，牛筋材质差异化</td>
+      </tr>
+      <tr>
+        <td>16</td><td><span class="tag tag-hg">🔥 烘干</span></td>
+        <td><strong>烘干猪宝片</strong></td>
+        <td><span class="tag tag-blue">二批扩展</span></td>
+        <td>内脏线差异化，猪源填补空白</td>
+      </tr>
+      <tr style="background:#f8f9fa;">
+        <td colspan="5" style="text-align:center;padding:8px;font-weight:600;color:#888;">—— 二批扩展：4 SKU，冻干2款 + 烘干2款 ——</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+</body>
+</html>
