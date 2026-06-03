@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品线规划 · 思维导图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f6fa; color: #1a1a2e; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a2744 0%, #2d4a8a 100%);
+    color: white; padding: 36px 40px 30px; text-align: center;
+  }
+  .header h1 { font-size: 26px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+  .header .sub { font-size: 13px; opacity: 0.8; margin-bottom: 16px; }
+  .header .brand-tags { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .header .brand-tags span { font-size: 12px; padding: 4px 14px; border: 1px solid rgba(255,255,255,0.4); border-radius: 16px; }
+
+  /* Container */
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* Three-layer bar */
+  .three-layer {
+    display: flex; gap: 0; margin-bottom: 28px; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .three-layer .tl-item {
+    flex: 1; padding: 18px 16px; text-align: center;
+  }
+  .three-layer .tl-item:nth-child(1) { background: #1a2744; color: white; }
+  .three-layer .tl-item:nth-child(2) { background: #2d4a8a; color: white; }
+  .three-layer .tl-item:nth-child(3) { background: #4a7bc7; color: white; }
+  .three-layer .tl-label { font-size: 11px; opacity: 0.7; margin-bottom: 4px; letter-spacing: 1px; }
+  .three-layer .tl-title { font-size: 15px; font-weight: 600; }
+  .three-layer .tl-desc { font-size: 11px; opacity: 0.75; margin-top: 4px; line-height: 1.5; }
+
+  /* Shelf evolution */
+  .shelf-bar {
+    display: flex; align-items: center; gap: 0; margin-bottom: 32px; padding: 16px 24px;
+    background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .shelf-bar .shelf-label { font-size: 13px; font-weight: 600; color: #666; white-space: nowrap; margin-right: 16px; }
+  .shelf-bar .shelf-items { display: flex; align-items: center; gap: 0; flex: 1; }
+  .shelf-bar .shelf-node {
+    padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center;
+  }
+  .shelf-bar .shelf-arrow { color: #bbb; font-size: 18px; padding: 0 8px; }
+  .shelf-bar .s1 { background: #eef2fb; color: #2d4a8a; }
+  .shelf-bar .s2 { background: #e8f5e9; color: #2e7d32; }
+  .shelf-bar .s3 { background: #fff3e0; color: #e65100; }
+
+  /* Mind Map Tree */
+  .mindmap { position: relative; }
+
+  /* Phase sections */
+  .phase-section { margin-bottom: 8px; }
+
+  /* Phase header */
+  .phase-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px; border-radius: 12px; cursor: pointer;
+    transition: all 0.2s; user-select: none;
+  }
+  .phase-header:hover { filter: brightness(0.97); }
+  .phase-num {
+    width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .phase-header .phase-title { font-size: 16px; font-weight: 700; color: white; flex: 1; }
+  .phase-header .phase-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 12px; color: white; opacity: 0.85;
+    background: rgba(255,255,255,0.2);
+  }
+  .phase-header .expand-icon { color: rgba(255,255,255,0.6); font-size: 18px; transition: transform 0.3s; }
+  .phase-header.active .expand-icon { transform: rotate(90deg); }
+
+  /* Phase colors */
+  .p1 .phase-header { background: linear-gradient(135deg, #1a2744, #2d4a8a); }
+  .p1 .phase-num { background: #4a7bc7; }
+  .p2 .phase-header { background: linear-gradient(135deg, #1b5e20, #388e3c); }
+  .p2 .phase-num { background: #66bb6a; }
+  .p3 .phase-header { background: linear-gradient(135deg, #e65100, #f57c00); }
+  .p3 .phase-num { background: #ffb74d; }
+  .p4 .phase-header { background: linear-gradient(135deg, #4a148c, #7b1fa2); }
+  .p4 .phase-num { background: #ba68c8; }
+
+  /* Phase body */
+  .phase-body {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+  }
+  .phase-body.open { max-height: 2000px; }
+
+  .phase-content {
+    padding: 20px 16px 8px 16px;
+  }
+
+  /* Tree structure */
+  .tree-level {
+    margin-left: 20px; padding-left: 20px;
+    border-left: 2px solid #e0e0e0;
+    position: relative;
+  }
+  .tree-level::before {
+    content: ''; position: absolute; left: -6px; top: 0;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #ccc; border: 2px solid #e0e0e0;
+  }
+  .tree-level.p1-tree { border-left-color: #85b7eb; }
+  .tree-level.p1-tree::before { background: #85b7eb; border-color: #85b7eb; }
+  .tree-level.p2-tree { border-left-color: #81c784; }
+  .tree-level.p2-tree::before { background: #81c784; border-color: #81c784; }
+  .tree-level.p3-tree { border-left-color: #ffb74d; }
+  .tree-level.p3-tree::before { background: #ffb74d; border-color: #ffb74d; }
+  .tree-level.p4-tree { border-left-color: #ce93d8; }
+  .tree-level.p4-tree::before { background: #ce93d8; border-color: #ce93d8; }
+
+  /* Tree nodes */
+  .tree-node {
+    margin-bottom: 14px; position: relative;
+  }
+  .tree-node::before {
+    content: ''; position: absolute; left: -20px; top: 14px;
+    width: 20px; height: 0; border-top: 2px solid #e0e0e0;
+  }
+  .p1-tree .tree-node::before { border-top-color: #b5d4f4; }
+  .p2-tree .tree-node::before { border-top-color: #a5d6a7; }
+  .p3-tree .tree-node::before { border-top-color: #ffe0b2; }
+  .p4-tree .tree-node::before { border-top-color: #e1bee7; }
+
+  /* Node cards */
+  .node-card {
+    background: white; border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    border-left: 4px solid #ddd;
+  }
+  .node-card .nc-title {
+    font-size: 14px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+  }
+  .node-card .nc-title .nc-icon { font-size: 16px; }
+  .node-card .nc-body { font-size: 12px; color: #666; line-height: 1.7; }
+
+  /* Sub-items as chips */
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .chip {
+    font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 500;
+  }
+
+  /* Phase-specific chip colors */
+  .p1-tree .node-card { border-left-color: #378add; }
+  .p1-tree .chip { background: #e6f1fb; color: #185fa5; }
+  .p1-tree .chip.chip-main { background: #b5d4f4; color: #042c53; font-weight: 600; }
+  .p1-tree .chip.chip-sub { background: #eef2fb; color: #2d4a8a; }
+
+  .p2-tree .node-card { border-left-color: #43a047; }
+  .p2-tree .chip { background: #e8f5e9; color: #2e7d32; }
+  .p2-tree .chip.chip-main { background: #a5d6a7; color: #1b5e20; font-weight: 600; }
+
+  .p3-tree .node-card { border-left-color: #fb8c00; }
+  .p3-tree .chip { background: #fff3e0; color: #e65100; }
+  .p3-tree .chip.chip-main { background: #ffe0b2; color: #bf360c; font-weight: 600; }
+
+  .p4-tree .node-card { border-left-color: #8e24aa; }
+  .p4-tree .chip { background: #f3e5f5; color: #6a1b9a; }
+  .p4-tree .chip.chip-main { background: #e1bee7; color: #4a148c; font-weight: 600; }
+
+  /* SKU role tags */
+  .sku-role {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    background: #f5f5f5; color: #888; margin-right: 4px;
+  }
+  .sku-role::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
+
+  /* Validation bar */
+  .validation-bar {
+    margin-top: 12px; padding: 10px 14px; background: #fafafa; border-radius: 8px;
+    font-size: 12px; color: #888;
+  }
+  .validation-bar .vb-label { font-weight: 600; color: #666; margin-bottom: 4px; font-size: 11px; letter-spacing: 0.5px; }
+
+  /* SKU detail table inside tree */
+  .sku-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+  .sku-table th { background: #f5f6fa; padding: 6px 10px; text-align: left; font-weight: 600; color: #666; font-size: 11px; }
+  .sku-table td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; color: #444; }
+  .sku-table tr:last-child td { border-bottom: none; }
+
+  /* User profile section */
+  .user-profile {
+    background: white; border-radius: 12px; padding: 24px 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 28px;
+  }
+  .user-profile .up-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+    padding-bottom: 12px; border-bottom: 2px solid #f0f0f0;
+  }
+  .user-profile .up-header .up-icon { font-size: 22px; }
+  .user-profile .up-header .up-title { font-size: 16px; font-weight: 700; color: #1a2744; }
+  .user-profile .up-header .up-sub { font-size: 12px; color: #999; margin-left: auto; }
+  .user-profile .up-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+  }
+  .user-profile .up-card {
+    background: #f9fafb; border-radius: 8px; padding: 14px 16px;
+  }
+  .user-profile .up-card .uc-label {
+    font-size: 11px; font-weight: 600; color: #2d4a8a; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .user-profile .up-card .uc-label::before {
+    content: ''; width: 4px; height: 4px; border-radius: 50%; background: #2d4a8a;
+  }
+  .user-profile .up-card .uc-value { font-size: 13px; color: #444; line-height: 1.7; }
+
+  /* User pain points & psychology */
+  .user-profile .up-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;
+  }
+  .user-profile .up-highlight {
+    background: linear-gradient(135deg, #eef2fb 0%, #f5f8ff 100%);
+    border-radius: 8px; padding: 14px 16px;
+  }
+  .user-profile .up-highlight .uc-label { color: #1a2744; }
+  .user-profile .up-highlight .uc-label::before { background: #1a2744; }
+
+  /* Application table */
+  .user-profile .up-apply {
+    margin-top: 16px; border-radius: 8px; overflow: hidden;
+  }
+  .user-profile .up-apply .ua-row {
+    display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+  }
+  .user-profile .up-apply .ua-row:last-child { border-bottom: none; }
+  .user-profile .up-apply .ua-label {
+    padding: 8px 12px; background: #f5f6fa; font-weight: 600; color: #666;
+    display: flex; align-items: center;
+  }
+  .user-profile .up-apply .ua-value {
+    padding: 8px 12px; color: #444; line-height: 1.6;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .header { padding: 24px 20px 20px; }
+    .header h1 { font-size: 20px; }
+    .three-layer { flex-direction: column; }
+    .shelf-bar { flex-direction: column; gap: 8px; }
+    .shelf-bar .shelf-items { flex-wrap: wrap; gap: 6px; }
+    .shelf-bar .shelf-arrow { display: none; }
+    .tree-level { margin-left: 12px; padding-left: 14px; }
+    .user-profile .up-row { grid-template-columns: 1fr; }
+    .user-profile .up-apply .ua-row { grid-template-columns: 1fr; }
+    .user-profile .up-apply .ua-label { padding: 6px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>产品线规划</h1>
+  <div class="sub">让每一个普通宠主，都能用简单的方式，给它带来真实的欢喜</div>
+  <div class="brand-tags">
+    <span>成分透明</span>
+    <span>适量投喂</span>
+    <span>科学轻养</span>
+    <span>陪伴成长</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 三层逻辑 -->
+  <div class="three-layer">
+    <div class="tl-item">
+      <div class="tl-label">第一层</div>
+      <div class="tl-title">母品牌</div>
+      <div class="tl-desc">消费者旅程<br>品牌认知 → 信任 → 忠诚</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">第二层</div>
+      <div class="tl-title">产品线</div>
+      <div class="tl-desc">消费需求<br>零食 → 功能 → 健康 → 主粮</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">第三层</div>
+      <div class="tl-title">SKU商业角色</div>
+      <div class="tl-desc">商业效率<br>入口 → 组合 → 复购 → 利润</div>
+    </div>
+  </div>
+
+  <!-- 货架演进 -->
+  <div class="shelf-bar">
+    <div class="shelf-label">货架演进</div>
+    <div class="shelf-items">
+      <div class="shelf-node s1">新手货架</div>
+      <div class="shelf-arrow">→</div>
+      <div class="shelf-node s2">进阶货架</div>
+      <div class="shelf-arrow">→</div>
+      <div class="shelf-node s3">高级货架</div>
+    </div>
+  </div>
+
+  <!-- 目标用户画像 -->
+  <div class="user-profile">
+    <div class="up-header">
+      <span class="up-icon">🎯</span>
+      <span class="up-title">目标用户画像</span>
+      <span class="up-sub">第一阶段核心消费人群</span>
+    </div>
+
+    <div class="up-grid">
+      <div class="up-card">
+        <div class="uc-label">养宠阶段</div>
+        <div class="uc-value">已度过新手盲目期，开始关注成分但还不算重度研究型，愿意为安全多花一点但不会钻研配料表每一个指标</div>
+      </div>
+      <div class="up-card">
+        <div class="uc-label">犬型分布</div>
+        <div class="uc-value">中小型犬为主（泰迪 / 柯基 / 比熊 / 雪纳瑞），这类犬主零食消费频次最高</div>
+      </div>
+      <div class="up-card">
+        <div class="uc-label">消费渠道</div>
+        <div class="uc-value">线下宠物店为主，偶尔线上补货。首批铺货场景以门店货架为核心</div>
+      </div>
+      <div class="up-card">
+        <div class="uc-label">价格带</div>
+        <div class="uc-value">单包 15-30 元可接受，月零食预算 100-200 元，愿意持续买但不会为一只狗花大钱</div>
+      </div>
+    </div>
+
+    <div class="up-row">
+      <div class="up-highlight">
+        <div class="uc-label">购买驱动力</div>
+        <div class="uc-value">① 狗爱吃（适口性）<br>② 看着安全（成分简单）<br>③ 包装好看（送人或晒图）<br>④ 新鲜感（想给狗换换口味尝尝鲜）</div>
+      </div>
+      <div class="up-highlight">
+        <div class="uc-label">核心痛点</div>
+        <div class="uc-value">① 市面零食配料表看不懂，不敢随便喂<br>② 便宜白牌不放心，大牌又太贵<br>③ 想给狗"加点好的"但不知道怎么选</div>
+      </div>
+    </div>
+
+    <div class="up-row">
+      <div class="up-card" style="grid-column: 1/-1;">
+        <div class="uc-label">消费心理</div>
+        <div class="uc-value">不追求极致性价比，也不盲目追贵 —— 要的是<strong>「看得懂的安心感」</strong>。品牌主张「成分透明 · 适量投喂 · 科学轻养」精准命中这个需求</div>
+      </div>
+    </div>
+
+    <div class="up-apply">
+      <div class="ua-row">
+        <div class="ua-label">画像 → 产品</div>
+        <div class="ua-value">中小型犬 → 规格不宜过大，10g 试吃 + 80g 家庭装合理；线下门店购买 → 包装需在货架上跳出来（果蔬模具类为此设计）；"看得懂的安心感" → 配料表干净、成分透明对应品牌主张</div>
+      </div>
+      <div class="ua-row">
+        <div class="ua-label">画像 → 定价</div>
+        <div class="ua-value">月预算 100-200 元，25 元零售价在可接受区间，适合多 SKU 组合购买（4 包不同 SKU 恰好 100 元档位）</div>
+      </div>
+      <div class="ua-row">
+        <div class="ua-label">画像 → 入口</div>
+        <div class="ua-value">适口性是第一决策力 → 鸡肉粒 / 鸡肉干作为入口款策略正确：先让狗爱吃，主人才会复购</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 思维导图 -->
+  <div class="mindmap">
+
+    <!-- ===== 第一阶段 ===== -->
+    <div class="phase-section p1">
+      <div class="phase-header active" onclick="togglePhase(this)">
+        <div class="phase-num">1</div>
+        <div class="phase-title">零食切入 · 冻干 + 烘干</div>
+        <div class="phase-tag">新手货架</div>
+        <div class="expand-icon">▶</div>
+      </div>
+      <div class="phase-body open">
+        <div class="phase-content">
+
+          <!-- 产品线分支 -->
+          <div class="tree-level p1-tree">
+
+            <!-- 狗·冻干主力线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title"><span class="nc-icon">🐕</span> 狗·冻干主力线</div>
+                <div class="chips">
+                  <span class="chip chip-main">鸡肉粒</span>
+                  <span class="chip chip-main">鸭肉粒</span>
+                  <span class="chip">生骨肉夹心</span>
+                  <span class="chip">羊奶棒</span>
+                  <span class="chip">鸡肉蛋黄粒</span>
+                  <span class="chip">内脏</span>
+                  <span class="chip">果蔬拌饭碎</span>
+                  <span class="chip">混合果蔬模具类</span>
+                </div>
+                <table class="sku-table">
+                  <tr><th>SKU角色</th><th>对应产品</th></tr>
+                  <tr><td><span class="sku-role">试吃入口款</span></td><td>冻干鸡肉粒 10g</td></tr>
+                  <tr><td><span class="sku-role">场景组合款</span></td><td>拌饭 · 训练奖励</td></tr>
+                  <tr><td><span class="sku-role">复购承接款</span></td><td>鸡肉粒 3×10g / 80g · 鸭肉粒</td></tr>
+                  <tr><td><span class="sku-role">渠道利润款</span></td><td>生骨肉夹心 · 高颜值果蔬混合</td></tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- 狗·烘干主力线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title"><span class="nc-icon">🐕</span> 狗·烘干主力线</div>
+                <div class="chips">
+                  <span class="chip chip-main">鸡肉干</span>
+                  <span class="chip chip-main">鸭肉干</span>
+                  <span class="chip">鸭肉绕雪梨</span>
+                  <span class="chip">鸡肉绕红薯</span>
+                  <span class="chip">黄瓜鸭肉薯片</span>
+                  <span class="chip">鸡肉蛋黄薯片</span>
+                  <span class="chip">鸡鸭混合牛筋棒</span>
+                  <span class="chip">烘干猪宝片</span>
+                </div>
+                <table class="sku-table">
+                  <tr><th>SKU角色</th><th>对应产品</th></tr>
+                  <tr><td><span class="sku-role">试吃入口款</span></td><td>烘干鸡肉干 10g</td></tr>
+                  <tr><td><span class="sku-role">场景组合款</span></td><td>鸭肉绕雪梨 + 鸡肉绕红薯 + 薯片系列</td></tr>
+                  <tr><td><span class="sku-role">复购承接款</span></td><td>鸡肉干/鸭肉干 80g</td></tr>
+                  <tr><td><span class="sku-role">渠道利润款</span></td><td><em style="color:#999;font-style:normal;">待定 — 需开发具有明确功能卖点或差异化形态的SKU</em></td></tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- 猫·冻干补充线（后续跟进） -->
+            <div class="tree-node">
+              <div class="node-card" style="border-left-color: #90caf9; opacity: 0.7;">
+                <div class="nc-title"><span class="nc-icon">🐈</span> 猫·冻干补充线 <small style="font-weight:400;color:#999;">（后续跟进）</small></div>
+                <div class="nc-body">狗线动销验证后，基于冻干供应链能力拓展猫零食线</div>
+              </div>
+            </div>
+
+            <!-- 猫·烘干补充线（后续跟进） -->
+            <div class="tree-node">
+              <div class="node-card" style="border-left-color: #90caf9; opacity: 0.7;">
+                <div class="nc-title"><span class="nc-icon">🐈</span> 猫·烘干补充线 <small style="font-weight:400;color:#999;">（后续跟进）</small></div>
+                <div class="nc-body">烘干供应链成熟后，同步拓展猫烘干品类</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 统一规格 -->
+          <div class="validation-bar">
+            <div class="vb-label">统一规格</div>
+            10g（试吃入口） / 3×10g（场景组合） / 80g（家庭装复购）
+          </div>
+
+          <!-- 验证指标 -->
+          <div class="validation-bar">
+            <div class="vb-label">动销验证</div>
+            动销验证款：小批量跑真实反馈 → 验证指标：动销率 · 补货频次 · 适口性 · 店主推荐意愿
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 第二阶段 ===== -->
+    <div class="phase-section p2">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">2</div>
+        <div class="phase-title">蒸煮 · 烘焙 · 轻功能</div>
+        <div class="phase-tag">进阶货架</div>
+        <div class="expand-icon">▶</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-content">
+          <div class="tree-level p2-tree">
+
+            <!-- 蒸煮线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">蒸煮线</div>
+                <div class="nc-body">低温蒸煮工艺，保留食材原味与营养，切入「新鲜感」消费需求</div>
+              </div>
+            </div>
+
+            <!-- 烘焙线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">烘焙线</div>
+                <div class="nc-body">慢火烘焙口感，对标人类烘焙零食消费趋势，宠物化演绎</div>
+              </div>
+            </div>
+
+            <!-- 轻功能线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">轻功能线</div>
+                <div class="nc-body">零食形态承载轻功能（美毛、关节、肠胃），为第三阶段保健品建立认知基础</div>
+              </div>
+            </div>
+
+            <!-- SKU角色 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">SKU商业角色</div>
+                <table class="sku-table">
+                  <tr><th>角色</th><th>定义</th></tr>
+                  <tr><td><span class="sku-role">场景拓展款</span></td><td>蒸煮/烘焙拓展新的消费场景</td></tr>
+                  <tr><td><span class="sku-role">利润提升款</span></td><td>高客单价品类拉升整体毛利</td></tr>
+                  <tr><td><span class="sku-role">升级承接款</span></td><td>承接第一批零食用户的消费升级</td></tr>
+                  <tr><td><span class="sku-role">线上测试款</span></td><td>线上渠道小批量测试新品</td></tr>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="validation-bar">
+            <div class="vb-label">验证方向</div>
+            功能认知建立 · 客单提升 · 复购升级路径<br>
+            蒸煮 · 烘焙 · 轻功能三线并行
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 第三阶段 ===== -->
+    <div class="phase-section p3">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">3</div>
+        <div class="phase-title">保健品 · 建立健康信任</div>
+        <div class="phase-tag">进阶货架延伸</div>
+        <div class="expand-icon">▶</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-content">
+          <div class="tree-level p3-tree">
+
+            <!-- 肠胃消化线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">肠胃消化线</div>
+                <div class="nc-body">益生菌、益生元、消化酶类产品，解决宠物肠胃敏感高频痛点</div>
+              </div>
+            </div>
+
+            <!-- 皮毛护理线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">皮毛护理线</div>
+                <div class="nc-body">卵磷脂、鱼油、海藻粉类产品，承接零食阶段「蛋黄美毛」认知</div>
+              </div>
+            </div>
+
+            <!-- 口腔关节线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">口腔关节线</div>
+                <div class="nc-body">洁齿、关节养护类产品，承接烘干阶段「磨牙洁齿」认知</div>
+              </div>
+            </div>
+
+            <!-- SKU角色 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">SKU商业角色</div>
+                <table class="sku-table">
+                  <tr><th>角色</th><th>定义</th></tr>
+                  <tr><td><span class="sku-role">健康信任款</span></td><td>建立专业健康品牌标签</td></tr>
+                  <tr><td><span class="sku-role">周期复购款</span></td><td>保健品按周期使用，形成稳定复购</td></tr>
+                  <tr><td><span class="sku-role">主粮铺垫款</span></td><td>为第四阶段主粮建立健康心智</td></tr>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="validation-bar">
+            <div class="vb-label">验证方向</div>
+            健康标签沉淀 · 周期复购 · 用户信任升级
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 第四阶段 ===== -->
+    <div class="phase-section p4">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">4</div>
+        <div class="phase-title">主粮 · 品牌终局</div>
+        <div class="phase-tag">高级货架</div>
+        <div class="expand-icon">▶</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-content">
+          <div class="tree-level p4-tree">
+
+            <!-- 猫主粮线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">猫主粮线</div>
+                <div class="nc-body">干粮/湿粮全品类猫主粮，承接冻干+保健品阶段建立的品牌信任</div>
+              </div>
+            </div>
+
+            <!-- 功能主粮线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">功能主粮线</div>
+                <div class="nc-body">针对特定健康需求（肠胃/皮毛/减肥）的功能性主粮细分</div>
+              </div>
+            </div>
+
+            <!-- 犬主粮线 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">犬主粮线</div>
+                <div class="nc-body">干粮/湿粮全品类犬主粮，承接狗零食+保健品阶段建立的消费认知</div>
+              </div>
+            </div>
+
+            <!-- SKU角色 -->
+            <div class="tree-node">
+              <div class="node-card">
+                <div class="nc-title">SKU商业角色</div>
+                <table class="sku-table">
+                  <tr><th>角色</th><th>定义</th></tr>
+                  <tr><td><span class="sku-role">旗舰主销款</span></td><td>品牌核心大单品，高频刚需入口</td></tr>
+                  <tr><td><span class="sku-role">功能细分款</span></td><td>功能性主粮满足差异化需求</td></tr>
+                  <tr><td><span class="sku-role">会员长期供给款</span></td><td>订阅制/会员制长期供给</td></tr>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="validation-bar">
+            <div class="vb-label">验证方向</div>
+            高频刚需复购 · 完整生命周期价值 · 品牌终局<br>
+            长期喂养信任
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function togglePhase(header) {
+  const body = header.nextElementSibling;
+  header.classList.toggle('active');
+  body.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
